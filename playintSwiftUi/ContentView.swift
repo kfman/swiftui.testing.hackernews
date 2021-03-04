@@ -8,9 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var news: [HackerNews] = [HackerNews]()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        List(news, id: \.id){ item in
+            Text(item.headline)
+        }
+        .onAppear(perform: {
+            loadNews()
+        } )
+    }
+    
+
+    private func loadNews(){
+        HackerNewsService().getNews { (data) in
+            print("Received data")
+            print(data)
+            self.news = data
+        }
     }
 }
 
