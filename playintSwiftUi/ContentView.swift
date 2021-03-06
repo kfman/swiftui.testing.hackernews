@@ -11,10 +11,10 @@ struct ContentView: View {
     @State var news: [HackerNews] = [HackerNews]()
     
     var body: some View {
-        VStack{
+        VStack {
             Text("Hacker news")
             List(news, id: \.id) { item in
-                Text(item.headline)
+                NewsItemTile(news: item)
             }
             .onAppear(perform: {
                 loadNews()

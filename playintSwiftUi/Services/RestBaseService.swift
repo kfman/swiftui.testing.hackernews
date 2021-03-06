@@ -24,7 +24,6 @@ class RestBaseService{
         URLSession.init(configuration: .default).dataTask(with: callUrl, completionHandler: { (data, response, error) in
             if let data = data {
                 if let result = try? JSONDecoder().decode(TResult.self, from: data){
-                    print("Got what...\(result)")
                     finished(result)
                 }else{
                     print("Error on decoding \(TResult.self) result \(String(bytes: data, encoding: .utf8) ?? "Bad error")")
@@ -42,9 +41,12 @@ class RestBaseService{
 }
 
 struct HackerNews : Codable{
-    let id: Int
-    let url: URL
-    let headline: String
+    var by: String?
+    var descendants, id: Int?
+    var kids: [Int]?
+    var score, time: Int?
+    var title, type: String?
+    var url: String?
 }
 
 class NewsCollection:RestBaseService{
@@ -62,7 +64,10 @@ class NewsCollection:RestBaseService{
     }
     
     func getStory(id: Int, onLoaded: @escaping (HackerNews) -> Void ){
-        
+        // https://hacker-news.firebaseio.com/v0/item/8863.json
+        super.get(endpoint: "/item/\(id).json") { (news: HackerNews) in
+            onLoaded(news)
+        }
     }
 }
 
@@ -79,18 +84,8 @@ class HackerNewsService {
     
     func getNews( _ finished: @escaping ([HackerNews])->Void){
         var news = [HackerNews]()
-//        news.append(HackerNews(id: 0, url: URL(string: "http://www.google.de")!, headline: "Test #1"))
-//        news.append(HackerNews(id: 1, url: URL(string: "http://www.google.de")!, headline: "Test #2"))
-//        news.append(HackerNews(id: 2, url: URL(string: "http://www.google.de")!, headline: "Test #3"))
-//        news.append(HackerNews(id: 3, url: URL(string: "http://www.google.de")!, headline: "Test #4"))
-//        news.append(HackerNews(id: 4, url: URL(string: "http://www.google.de")!, headline: "Test #5"))
-//        news.append(HackerNews(id: 5, url: URL(string: "http://www.google.de")!, headline: "Test #6"))
-//        news.append(HackerNews(id: 6, url: URL(string: "http://www.google.de")!, headline: "Test #7"))
-//        news.append(HackerNews(id: 7, url: URL(string: "http://www.google.de")!, headline: "Test #8"))
-//        news.append(HackerNews(id: 8, url: URL(string: "http://www.google.de")!, headline: "Test #9"))
-//        news.append(HackerNews(id: 9, url: URL(string: "http://www.google.de")!, headline: "Test #10"))
-        
         let group = DispatchGroup()
+        group.enter()
         newsCollection.getTopStoryIds { (ids) in
             for id in ids {
                 group.enter()
@@ -99,6 +94,7 @@ class HackerNewsService {
                     group.leave()
                 }
             }
+            group.leave()
         }
         
         group.notify(queue: .main, execute: {
