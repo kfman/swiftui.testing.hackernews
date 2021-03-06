@@ -14,7 +14,7 @@ struct NewsItemTile: View {
     var body: some View {
         VStack {
             Text(news.title ?? "")
-            Text(news.by ?? "")
+            Text(news.by ?? "").font(.footnote)
         }.onTapGesture {
             print(news.url ?? "")
         }
