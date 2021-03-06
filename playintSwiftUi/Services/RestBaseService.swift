@@ -24,17 +24,31 @@ class RestBaseService<TModel> where TModel: Codable{
     
 }
 
-
-class NewsCollection:RestBaseService<[String]>{
-    
-}
-
-
 struct HackerNews : Codable{
     let id: Int
     let url: URL
     let headline: String
 }
+
+class NewsCollection:RestBaseService<[String]>{
+    
+    private let url: String
+    
+    init(url: String){
+        self.url = url
+    }
+    
+    func getTopStoryIds(onLoaded: @escaping ([String]) -> Void){
+        
+    }
+    
+    func getStory(id: String, onLoaded: @escaping (HackerNews) -> Void ){
+        
+    }
+}
+
+
+
 
 class HackerNewsService {
     
