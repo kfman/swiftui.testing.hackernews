@@ -60,6 +60,7 @@
 		249186A725F1732E00203020 /* playintSwiftUi */ = {
 			isa = PBXGroup;
 			children = (
+				249186C625F36A3100203020 /* Tests */,
 				249186C025F1771100203020 /* Services */,
 				249186A825F1732E00203020 /* playintSwiftUiApp.swift */,
 				249186AA25F1732E00203020 /* ContentView.swift */,
@@ -84,6 +85,13 @@
 				249186C325F1772400203020 /* RestBaseService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		249186C625F36A3100203020 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

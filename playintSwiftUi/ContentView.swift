@@ -11,16 +11,18 @@ struct ContentView: View {
     @State var news: [HackerNews] = [HackerNews]()
     
     var body: some View {
-        List(news, id: \.id){ item in
-            Text(item.headline)
+        VStack{
+            Text("Hacker news")
+            List(news, id: \.id) { item in
+                Text(item.headline)
+            }
+            .onAppear(perform: {
+                loadNews()
+            })
         }
-        .onAppear(perform: {
-            loadNews()
-        } )
     }
     
-
-    private func loadNews(){
+    private func loadNews() {
         HackerNewsService().getNews { (data) in
             print("Received data")
             print(data)
